@@ -22,11 +22,12 @@ class App extends React.Component<{}, IState> {
             uploadFile: null
         }
 
-        this.handleFileUpload = this.handleFileUpload.bind(this)
-        this.uploadMovieData = this.uploadMovieData.bind(this)
-        this.selectNewMovie = this.selectNewMovie.bind(this)
-        this.fetchMovies = this.fetchMovies.bind(this)
         this.fetchMovies("")
+        this.selectNewMovie = this.selectNewMovie.bind(this)
+        this.handleFileUpload = this.handleFileUpload.bind(this)
+        this.fetchMovies = this.fetchMovies.bind(this)
+        this.uploadMovieData = this.uploadMovieData.bind(this)
+
     }
 
     public render() {
@@ -34,50 +35,53 @@ class App extends React.Component<{}, IState> {
         return (
             <div>
                 <div className="header-wrapper">
-				<div className="container header">
-					<div className="btn btn-primary btn-action btn-add" onClick={this.openModal}>Add Movie</div>
-				</div>
-			</div>
-            <div className="container">
-                <div className="row">
-                    <div className="col-7">
-                        <MovieImage selectedMovie={this.state.selectedMovie} />
-                    </div>
-                    <div className="col-5">
-                        <MovieList movies={this.state.movies} selectNewMovie={this.selectNewMovie} searchByTitle={this.fetchMovies} />
+                    <div className="container header">
+                        <div className="btn btn-primary btn-action btn-add" onClick={this.openModal}>Add Movie</div>
                     </div>
                 </div>
-            </div>
-            <Modal open={open} onClose={this.closeModal}>
-				<form>
-					<div className="form-group-title">
-						<label>Movie Title</label>
-						<input type="text" className="form-control" id="movie-title-input" placeholder="Enter Title" />
-						<small className="form-text text-muted">Movie Title can be used for search</small>
-					</div>
-					<div className="form-group-playtime">
-						<label>Running hour</label>
-						<input type="text" className="form-control" id="movie-playtime-input" placeholder="Enter playtime in min" />
-						<small className="form-text text-muted">Enter running hour for movie</small>
-					</div>
-                    <div className="form-group-genre">
-						<label>Genre</label>
-						<input type="text" className="form-control" id="movie-genre-input" placeholder="Enter genre of the movie" />
-						<small className="form-text text-muted">Movie genre can be used for search</small>
-					</div>
-                    <div className="form-group-rating">
-						<label>Rating</label>
-						<input type="text" className="form-control" id="movie-rating-input" placeholder="Enter rating of the movie" />
-						<small className="form-text text-muted">Eg. PG, R15</small>
-					</div>
-					<div className="form-group">
-						<label>Image</label>
+                <div className="container">
+                    <div className="row">
+                        <div className="col-7">
+                            <div className="col-5">
+                                <MovieList movies={this.state.movies} selectNewMovie={this.selectNewMovie} searchByTitle={this.fetchMovies} />
+                            </div>
+                            <MovieImage selectedMovie={this.state.selectedMovie} />
+                            
+                        </div>
+
+                    </div>
+                </div>
+                <Modal open={open} onClose={this.closeModal}>
+                    <form>
+                        <div className="form-group-title">
+                            <label>Movie Title</label>
+                            <input type="text" className="form-control" id="movie-title-input" placeholder="Enter Title" />
+                            <small className="form-text text-muted">Movie Title can be used for search</small>
+                        </div>
+                        <div className="form-group-playtime">
+                            <label>Running hour</label>
+                            <input type="text" className="form-control" id="movie-playtime-input" placeholder="Enter playtime in min" />
+                            <small className="form-text text-muted">Enter running hour for movie</small>
+                        </div>
+                        <div className="form-group-genre">
+                            <label>Genre</label>
+                            <input type="text" className="form-control" id="movie-genre-input" placeholder="Enter genre of the movie" />
+                            <small className="form-text text-muted">Movie genre can be used for search</small>
+                        </div>
+                        <div className="form-group-rating">
+                            <label>Rating</label>
+                            <input type="text" className="form-control" id="movie-rating-input" placeholder="Enter rating of the movie" />
+                            <small className="form-text text-muted">Eg. PG, R15</small>
+                        </div>
+                        <div className="form-group">
+                            <label>Image</label>
                             <input type="file" onChange={this.handleFileUpload} className="form-control-file" id="movie-image-input" />
-					</div>
+                        </div>
 
                         <button type="button" className="btn" onClick={this.uploadMovieData}>Upload</button>
-				</form>
-			</Modal>
+                    </form>
+                </Modal>
+
             </div>
         );
     }
@@ -127,12 +131,7 @@ class App extends React.Component<{}, IState> {
             })
     }
 
-    // Change selected meme
-    private selectNewMovie(newMovie: any) {
-        this.setState({
-            selectedMovie: newMovie
-        })
-    }
+
 
     // Modal open
     private openModal = () => {
@@ -143,6 +142,13 @@ class App extends React.Component<{}, IState> {
     private closeModal = () => {
         this.setState({ open: false });
     };
+
+    // Change selected movie
+    private selectNewMovie(newMovie: any) {
+        this.setState({
+            selectedMovie: newMovie
+        })
+    }
 
     private fetchMovies(title: any) {
         let url = "https://jinmsamovieapi.azurewebsites.net/api/Movie"
@@ -156,11 +162,12 @@ class App extends React.Component<{}, IState> {
             .then(json => {
                 let selectedMovie = json[0]
                 if (selectedMovie === undefined) {
-                    selectedMovie = { "id": 0, "title": "Loading", "playtime": "0", "genre": "", "rating": "", "url": "", "uploaded": "", "width": "0", "height": "0"  }
+                    selectedMovie = { "id": 0, "title": "Loading", "playtime": 0, "genre": "try something different", "rating": "", "url": "", "uploaded": "", "width": "0", "height": "0" }
                 }
                 this.setState({
-                    movies: json,
-                    selectedMovie
+                    selectedMovie,
+                    movies: json
+
                 })
             });
     }

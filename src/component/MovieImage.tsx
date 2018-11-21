@@ -97,16 +97,6 @@ export default class MovieImage extends React.Component<IProps, IState> {
                 "width": selectedMovie.width
 
 
-                /*"genre": updatedGenre,
-                "height": selectedMovie.height,
-                "id": selectedMovie.id,
-                "playtime": updatedPlaytime,
-                "rating": updatedRating,
-                "title": updatedTitle,
-                "uploaded": selectedMovie.uploaded,
-                "url": selectedMovie.url,
-                "width": selectedMovie.width*/
-
             }),
             headers: { 'cache-control': 'no-cache', 'Content-Type': 'application/json' },
             method: 'PUT'
