@@ -1,7 +1,7 @@
 ﻿import * as React from 'react';
 import Modal from 'react-responsive-modal';
 import './App.css';
-import MovieImage from './component/MovieImage';
+// import MovieImage from './component/MovieImage';
 import MovieList from './component/MovieList';
 
 
@@ -35,22 +35,42 @@ class App extends React.Component<{}, IState> {
         return (
             <div>
                 <div className="header-wrapper">
-                    <div className="container header">
-                        <div className="btn btn-primary btn-action btn-add" onClick={this.openModal}>Add Movie</div>
-                    </div>
+                    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+                        <a className="navbar-brand" href="#">Navbar</a>
+                        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                            <span className="navbar-toggler-icon"/>
+                        </button>
+                        <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+                            <div className="navbar-nav">
+                                <a className="nav-item nav-link active" href="#">HOT MOVIES <span className="sr-only">(current)</span></a>
+                                <a className="nav-item nav-link" href="#">Features</a>
+                                <a className="nav-item nav-link" href="#">Pricing</a>
+                            </div>
+                        </div>
+                    </nav>
                 </div>
                 <div className="container">
-                    <div className="row">
-                        <div className="col-7">
-                            <div className="col-5">
-                                <MovieList movies={this.state.movies} selectNewMovie={this.selectNewMovie} searchByTitle={this.fetchMovies} />
-                            </div>
-                            <MovieImage selectedMovie={this.state.selectedMovie} />
-                            
+                    <div className="row justify-content-md-center">
+                        <div className="col-sm-">
+                            <MovieList movies={this.state.movies} selectNewMovie={this.selectNewMovie} searchByTitle={this.fetchMovies} />
                         </div>
 
                     </div>
                 </div>
+                {/* <div className="container">
+                    <div className="row">
+                        <div className="col-7">
+                            <MovieImage selectedMovie={this.state.selectedMovie} />
+                        </div>
+                    </div>
+                </div> */}
+
+                <div className="container header">
+                    <div className="btn btn-primary btn-action btn-add" onClick={this.openModal}>Add Movie</div>
+                </div>
+
+                {/* Modal used for Adding Movie */}
+
                 <Modal open={open} onClose={this.closeModal}>
                     <form>
                         <div className="form-group-title">
