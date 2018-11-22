@@ -34,13 +34,16 @@ class App extends React.Component<{}, IState> {
         }
 
         this.fetchMovies("")
-        this.selectNewMovie = this.selectNewMovie.bind(this)
-        this.handleFileUpload = this.handleFileUpload.bind(this)
         this.fetchMovies = this.fetchMovies.bind(this)
+        this.handleFileUpload = this.handleFileUpload.bind(this)
         this.uploadMovieData = this.uploadMovieData.bind(this)
+        this.selectNewMovie = this.selectNewMovie.bind(this)
+        
         this.loginIfYouCan = this.loginIfYouCan.bind(this)
-        this.createButton =this.createButton.bind(this)
         this.logout = this.logout.bind(this)
+
+        this.createButton = this.createButton.bind(this)
+        this.addMovieButton = this.addMovieButton.bind(this)
 
     }
 
@@ -50,6 +53,7 @@ class App extends React.Component<{}, IState> {
         return (
             <div>
                 <div className="header-wrapper">
+
                     <nav className="navbar navbar-expand-lg navbar-light bg-light">
                         <a className="navbar-brand" href="#">Navbar</a>
                         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,17 +61,16 @@ class App extends React.Component<{}, IState> {
                         </button>
                         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                             <div className="navbar-nav">
-                                <a className="nav-item nav-link active" href="#">HOT MOVIES <span className="sr-only">(current)</span></a>
-                                <a className="nav-item nav-link" href="#">Features</a>
-                                {this.createButton()}
-
+                                <a className="nav-item nav-link active" href="#">HOT MOVIES <span className="sr-only">(current)</span></a>&nbsp;
+                                <a className="nav-item nav-link" href="#">Features</a>&nbsp;
+                                {this.createButton()}&nbsp;
+                                {this.addMovieButton()}
                             </div>
                         </div>
-
-
                     </nav>
 
                 </div>
+                
                 <div className="container">
                     <div className="row justify-content-md-center">
                         <div className="col-sm-">
@@ -83,10 +86,6 @@ class App extends React.Component<{}, IState> {
                         </div>
                     </div>
                 </div> */}
-
-                <div className="container header">
-                    <div className="btn btn-primary btn-action btn-add" onClick={this.openAddMovieModal}>Add Movie</div>
-                </div>
 
                 {/* Modal used for Adding Movie */}
 
@@ -148,11 +147,11 @@ class App extends React.Component<{}, IState> {
     }
 
     private logout() {
-            this.setState({ 
-                loggedIn: !this.state.loggedIn
-            })
-            alert('Logged out')
-            this.forceUpdate()
+        this.setState({
+            loggedIn: !this.state.loggedIn
+        })
+        alert('Logged out')
+        this.forceUpdate()
     }
 
     private loginIfYouCan() {
@@ -165,8 +164,6 @@ class App extends React.Component<{}, IState> {
         if (typeId === "admin" && typePassword === "admin") {
             this.setState({ loggedIn: true })
             alert('Logged in as Admin')
-            // tslint:disable-next-line:no-console
-            console.log(this.state.loggedIn);
         }
         else {
             alert('Wrong login info')
@@ -184,6 +181,14 @@ class App extends React.Component<{}, IState> {
             return <button className="btn btn-outline-success my-2 my-sm-0" onClick={this.openLoginModal}>Login</button>
         } else {
             return <button className="btn btn-outline-success my-2 my-sm-0" onClick={this.logout}>Logout</button>
+        }
+    }
+
+    private addMovieButton() {
+        if (this.state.loggedIn === true) {
+            return <div className="btn btn-primary btn-action btn-add" onClick={this.openAddMovieModal}>Add Movie</div>
+        } else {
+            return
         }
     }
 
