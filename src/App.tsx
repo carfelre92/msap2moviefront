@@ -6,18 +6,27 @@ import MovieList from './component/MovieList';
 
 
 interface IState {
+    loggedIn: boolean,
     movies: any[],
     open: boolean,
+    openLogin: boolean,
     selectedMovie: any,
-    uploadFile: any
+    uploadFile: any,
+    id:any,
+    password:any
+
 }
 
 class App extends React.Component<{}, IState> {
     constructor(props: any) {
         super(props)
         this.state = {
+            id:null,
+            loggedIn: false,
             movies: [],
             open: false,
+            openLogin:false,
+            password:null,
             selectedMovie: { "id": 0, "title": "Loading", "playtime": "0", "genre": "", "rating": "", "url": "", "uploaded": "", "width": "0", "height": "0" },
             uploadFile: null
         }
@@ -27,25 +36,30 @@ class App extends React.Component<{}, IState> {
         this.handleFileUpload = this.handleFileUpload.bind(this)
         this.fetchMovies = this.fetchMovies.bind(this)
         this.uploadMovieData = this.uploadMovieData.bind(this)
+        this.loginIfYouCan = this.loginIfYouCan.bind(this)
 
     }
 
     public render() {
         const { open } = this.state;
+        const { openLogin } = this.state;
         return (
             <div>
                 <div className="header-wrapper">
                     <nav className="navbar navbar-expand-lg navbar-light bg-light">
                         <a className="navbar-brand" href="#">Navbar</a>
                         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                            <span className="navbar-toggler-icon"/>
+                            <span className="navbar-toggler-icon" />
                         </button>
                         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                             <div className="navbar-nav">
                                 <a className="nav-item nav-link active" href="#">HOT MOVIES <span className="sr-only">(current)</span></a>
                                 <a className="nav-item nav-link" href="#">Features</a>
-                                <a className="nav-item nav-link" href="#">Pricing</a>
+                                
                             </div>
+                            <ul className="nav navbar-nav navbar-right">
+                            <button className="btn btn-outline-success my-2 my-sm-0" onClick={this.openLoginModal}>Login</button>
+                            </ul>
                         </div>
                     </nav>
                 </div>
@@ -66,12 +80,12 @@ class App extends React.Component<{}, IState> {
                 </div> */}
 
                 <div className="container header">
-                    <div className="btn btn-primary btn-action btn-add" onClick={this.openModal}>Add Movie</div>
+                    <div className="btn btn-primary btn-action btn-add" onClick={this.openAddMovieModal}>Add Movie</div>
                 </div>
 
                 {/* Modal used for Adding Movie */}
 
-                <Modal open={open} onClose={this.closeModal}>
+                <Modal open={open} onClose={this.closeAddMovieModal}>
                     <form>
                         <div className="form-group-title">
                             <label>Movie Title</label>
@@ -102,8 +116,30 @@ class App extends React.Component<{}, IState> {
                     </form>
                 </Modal>
 
+                <Modal open={openLogin} onClose={this.closeLoginModal}>
+                    <form className="login-modal">
+                        <div className="id">
+                            <label>ID</label>
+                            <input type="text" id="id-input" placeholder="Enter login ID" />
+                            <small />
+                        </div>
+                        <div className="password">
+                            <label>ID</label>
+                            <input type="text" id="password-input" placeholder="Enter password" />
+                            <small />
+                        </div>
+
+                        <button type="button" className="btn" onClick={this.loginIfYouCan}>Login</button>
+                    </form>
+                </Modal>
+
+
             </div>
         );
+    }
+
+    private loginIfYouCan(){
+        return null
     }
 
     private handleFileUpload(fileList: any) {
@@ -154,13 +190,21 @@ class App extends React.Component<{}, IState> {
 
 
     // Modal open
-    private openModal = () => {
+    private openAddMovieModal = () => {
         this.setState({ open: true });
     };
 
+    private openLoginModal = () => {
+        this.setState({ openLogin: true });
+    };
+
     // Modal close
-    private closeModal = () => {
+    private closeAddMovieModal = () => {
         this.setState({ open: false });
+    };
+
+    private closeLoginModal = () => {
+        this.setState({ openLogin: false });
     };
 
     // Change selected movie

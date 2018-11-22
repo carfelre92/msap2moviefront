@@ -14,25 +14,25 @@ export default class MovieList extends React.Component<IProps, {}> {
 
     public getSizeState() {
         let sizeState;
-        if(window.innerWidth > 320) {
+        if (window.innerWidth > 320) {
             sizeState = 1;
         } else {
             sizeState = 2;
 
-         this.setState({
-             numberOfColumns: sizeState
-                    });
-      }
+            this.setState({
+                numberOfColumns: sizeState
+            });
+        }
     }
 
     public componentDidMount() {
         this.getSizeState();
-      window.addEventListener("resize", this.getSizeState.bind(this));
-      }
-      
+        window.addEventListener("resize", this.getSizeState.bind(this));
+    }
+
     public componentWillUnmount() {
-          window.removeEventListener("resize", this.getSizeState.bind(this));
-        }
+        window.removeEventListener("resize", this.getSizeState.bind(this));
+    }
 
 
 
@@ -75,20 +75,26 @@ export default class MovieList extends React.Component<IProps, {}> {
         const width = window.innerWidth;
         const card: any[] = []
         const movieList = this.props.movies
-        
+
         if (movieList == null) {
             return card
         }
 
-        if(width > 360) {
+        if (width > 360) {
             for (let i = 0; i < movieList.length; i++) {
                 const children = []
                 const movie = movieList[i]
                 children.push(
-                    <div className="card">
-                        <div className="col-5">
-                            <div className="card">
-                                <img className="card-img-top" src={movie.url} alt="Card image cap" />
+                    <div className="card-group">
+                        <div className="movie-imageCard">
+                            <div className="col">
+                                <div className="card">
+                                    <img className="card-img-top" src={movie.url} alt="Card image cap" />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="movie-detailCard">
+                            <div className="col">
                                 <div className="card-body">
                                     <h5 className="card-title">Card title</h5>
                                     <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
@@ -102,11 +108,11 @@ export default class MovieList extends React.Component<IProps, {}> {
                     <br />
                 )
                 card.push(<tr key={i + ""} id={i + ""} onClick={this.selectRow.bind(this, i)}>{children}</tr>)
-    
-            } 
+
+            }
         }
 
-        
+
         return card
     }
 

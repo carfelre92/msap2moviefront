@@ -5,8 +5,8 @@ body {
 }
 
 .card-img-top {
-  max-width: 768px;
-  max-height: 488px;
+  width: 322px;
+  height: 445px;
 }
 
 .movieCard{
