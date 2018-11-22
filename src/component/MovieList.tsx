@@ -14,7 +14,7 @@ export default class MovieList extends React.Component<IProps, {}> {
 
     public getSizeState() {
         let sizeState;
-        if (window.innerWidth > 320) {
+        if (window.innerWidth > 360) {
             sizeState = 1;
         } else {
             sizeState = 2;
@@ -53,16 +53,15 @@ export default class MovieList extends React.Component<IProps, {}> {
                 <div className="row movie-list-table">
                     <table className="table table-striped">
                         <tbody>
-                            {this.createTable()}
+                            {/*{this.createTable()}*/}
                         </tbody>
                     </table>
                 </div>
 
                 {/* Creating cards of movie */}
 
-                <div className="movieCard">
-                    {this.createCard()}
-                </div>
+
+                {this.createCard()}
 
 
             </div>
@@ -85,20 +84,22 @@ export default class MovieList extends React.Component<IProps, {}> {
                 const children = []
                 const movie = movieList[i]
                 children.push(
-                    <div className="card-group">
-                        <div className="movie-imageCard">
-                            <div className="col">
-                                <div className="card">
-                                    <img className="card-img-top" src={movie.url} alt="Card image cap" />
+                    <div className="movieCard">
+                        <div className="card-group">
+                            <div className="movie-imageCard">
+                                <div className="col">
+                                    <div className="card">
+                                        <img className="card-img-top" src={movie.url} alt="Card image cap" />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="movie-detailCard">
-                            <div className="col">
-                                <div className="card-body">
-                                    <h5 className="card-title">Card title</h5>
-                                    <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                    <a href="#" className="btn btn-primary">Go somewhere</a>
+                            <div className="movie-detailCard">
+                                <div className="col">
+                                    <div className="card-body">
+                                        <h5 className="card-title">Card title</h5>
+                                        <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                        <a href="#" className="btn btn-primary">Go somewhere</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -112,11 +113,34 @@ export default class MovieList extends React.Component<IProps, {}> {
             }
         }
 
+        if (width < 361) {
+            for (let i = 0; i < movieList.length; i++) {
+                const children = []
+                const movie = movieList[i]
+                children.push(
+                    <div className="small-movieCard">
+                        <div className="card">
+                            <img className="card-img-top" src={movie.url} alt="Card image cap" />
+                            <div className="card-body">
+                                <button type="button" className="btn btn-primary hello">Movie Details</button>
+                                <button type="button" className="btn btn-outline-secondary hello ">View Trailer</button>
+                            </div>
+                        </div>
+                    </div>
+                )
+                children.push(
+                    <br />
+                )
+                card.push(<tr key={i + ""} id={i + ""} onClick={this.selectRow.bind(this, i)}>{children}</tr>)
+            }
+            
+        }
+
 
         return card
     }
 
-    private createTable() {
+    /*private createTable() {
         const table: any[] = []
         const movieList = this.props.movies
         if (movieList == null) {
@@ -132,7 +156,7 @@ export default class MovieList extends React.Component<IProps, {}> {
             table.push(<tr key={i + ""} id={i + ""} onClick={this.selectRow.bind(this, i)}>{children}</tr>)
         }
         return table
-    }
+    }*/
 
     // Meme selection handler to display selected meme in details component
     private selectRow(index: any) {

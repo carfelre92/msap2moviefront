@@ -61,7 +61,6 @@ class App extends React.Component<{}, IState> {
                         </button>
                         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                             <div className="navbar-nav">
-                                <a className="nav-item nav-link active" href="#">HOT MOVIES <span className="sr-only">(current)</span></a>&nbsp;
                                 <a className="nav-item nav-link" href="#">Features</a>&nbsp;
                                 {this.createButton()}&nbsp;
                                 {this.addMovieButton()}

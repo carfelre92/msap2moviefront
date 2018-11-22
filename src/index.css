@@ -9,7 +9,21 @@ body {
   height: 445px;
 }
 
+.card-img-top {
+  width: 340px;
+  height: 445px;
+}
+
+.small-movieCard{
+  margin-right: -10px;
+  margin-left: -10px;
+}
 .movieCard{
   margin-right: -30px;
   margin-left: -30px;
+}
+
+.hello{
+  width: 50%;
+  float:left;
 }
