@@ -12,8 +12,9 @@ interface IState {
     openLogin: boolean,
     selectedMovie: any,
     uploadFile: any,
-    id:any,
-    password:any
+    id: any,
+    password: any
+    shown: boolean
 
 }
 
@@ -21,13 +22,14 @@ class App extends React.Component<{}, IState> {
     constructor(props: any) {
         super(props)
         this.state = {
-            id:null,
+            id: null,
             loggedIn: false,
             movies: [],
             open: false,
-            openLogin:false,
-            password:null,
+            openLogin: false,
+            password: null,
             selectedMovie: { "id": 0, "title": "Loading", "playtime": "0", "genre": "", "rating": "", "url": "", "uploaded": "", "width": "0", "height": "0" },
+            shown: true,
             uploadFile: null
         }
 
@@ -37,6 +39,8 @@ class App extends React.Component<{}, IState> {
         this.fetchMovies = this.fetchMovies.bind(this)
         this.uploadMovieData = this.uploadMovieData.bind(this)
         this.loginIfYouCan = this.loginIfYouCan.bind(this)
+        this.createButton =this.createButton.bind(this)
+        this.logout = this.logout.bind(this)
 
     }
 
@@ -55,13 +59,14 @@ class App extends React.Component<{}, IState> {
                             <div className="navbar-nav">
                                 <a className="nav-item nav-link active" href="#">HOT MOVIES <span className="sr-only">(current)</span></a>
                                 <a className="nav-item nav-link" href="#">Features</a>
-                                
+                                {this.createButton()}
+
                             </div>
-                            <ul className="nav navbar-nav navbar-right">
-                            <button className="btn btn-outline-success my-2 my-sm-0" onClick={this.openLoginModal}>Login</button>
-                            </ul>
                         </div>
+
+
                     </nav>
+
                 </div>
                 <div className="container">
                     <div className="row justify-content-md-center">
@@ -116,19 +121,23 @@ class App extends React.Component<{}, IState> {
                     </form>
                 </Modal>
 
+
+                {/* Modal used Login */}
+
                 <Modal open={openLogin} onClose={this.closeLoginModal}>
                     <form className="login-modal">
-                        <div className="id">
+                        <div className="form-group-id">
                             <label>ID</label>
-                            <input type="text" id="id-input" placeholder="Enter login ID" />
+                            <input type="text" className="form-control" id="id-input" placeholder="Enter login ID" />
+                            <br />
                             <small />
                         </div>
-                        <div className="password">
-                            <label>ID</label>
-                            <input type="text" id="password-input" placeholder="Enter password" />
+                        <div className="form-group-password">
+                            <label>Password</label>
+                            <input type="text" className="form-control" id="password-input" placeholder="Enter password" />
                             <small />
+                            <br />
                         </div>
-
                         <button type="button" className="btn" onClick={this.loginIfYouCan}>Login</button>
                     </form>
                 </Modal>
@@ -138,14 +147,44 @@ class App extends React.Component<{}, IState> {
         );
     }
 
-    private loginIfYouCan(){
-        return null
+    private logout() {
+            this.setState({ 
+                loggedIn: !this.state.loggedIn
+            })
+            alert('Logged out')
+            this.forceUpdate()
+    }
+
+    private loginIfYouCan() {
+        const loginId = document.getElementById("id-input") as HTMLInputElement
+        const loginPassword = document.getElementById("password-input") as HTMLInputElement
+
+        const typeId = loginId.value
+        const typePassword = loginPassword.value
+
+        if (typeId === "admin" && typePassword === "admin") {
+            this.setState({ loggedIn: true })
+            alert('Logged in as Admin')
+            // tslint:disable-next-line:no-console
+            console.log(this.state.loggedIn);
+        }
+        else {
+            alert('Wrong login info')
+        }
     }
 
     private handleFileUpload(fileList: any) {
         this.setState({
             uploadFile: fileList.target.files
         })
+    }
+
+    private createButton() {
+        if (this.state.loggedIn === false) {
+            return <button className="btn btn-outline-success my-2 my-sm-0" onClick={this.openLoginModal}>Login</button>
+        } else {
+            return <button className="btn btn-outline-success my-2 my-sm-0" onClick={this.logout}>Logout</button>
+        }
     }
 
     private uploadMovieData() {
@@ -189,22 +228,23 @@ class App extends React.Component<{}, IState> {
 
 
 
-    // Modal open
-    private openAddMovieModal = () => {
-        this.setState({ open: true });
-    };
-
+    // Login modal
     private openLoginModal = () => {
         this.setState({ openLogin: true });
     };
 
-    // Modal close
-    private closeAddMovieModal = () => {
-        this.setState({ open: false });
-    };
-
     private closeLoginModal = () => {
         this.setState({ openLogin: false });
+    };
+
+
+    // Movie-add modal
+    private openAddMovieModal = () => {
+        this.setState({ open: true });
+    };
+
+    private closeAddMovieModal = () => {
+        this.setState({ open: false });
     };
 
     // Change selected movie
