@@ -1,4 +1,4 @@
-﻿import MediaStreamRecorder from '../../node_modules/msr';
+﻿import MediaStreamRecorder from 'msr';
 import * as React from "react";
 import Modal from 'react-responsive-modal';
 
