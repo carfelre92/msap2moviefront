@@ -13,6 +13,7 @@ interface IProps {
 interface IState {
     openn: boolean
     numberOfColumns: any
+    openView: boolean
     open: boolean
     width: any
     height: any
@@ -25,6 +26,7 @@ export default class MovieList extends React.Component<IProps, IState> {
         this.state = {
             height: window.innerHeight,
             open: false,
+            openView: false,
             openn: false,
             numberOfColumns: null,
             width: window.innerWidth
@@ -78,7 +80,10 @@ export default class MovieList extends React.Component<IProps, IState> {
         const { open } = this.state;
         return (
 
+
+
             <div>
+                
                 <div className="input-group">
                     <input type="text" id="search-tag-textbox" className="form-control" placeholder="Search By Title" /> {/* Searchbox */}
                     <div className="input-group-append">
@@ -174,6 +179,7 @@ export default class MovieList extends React.Component<IProps, IState> {
         const card: any[] = []
         // const width = window.innerWidth;
         const movieList = this.props.movies
+        const { openView } = this.state;
 
         if (movieList == null) {
             return card
@@ -199,17 +205,26 @@ export default class MovieList extends React.Component<IProps, IState> {
                                     <h5 className="card-title">Title : {movie.title}</h5>
                                     <p className="card-text">Genre : {movie.genre}</p>
                                     <p className="card-text">Running hour : {movie.playtime} min</p>
+                                    <p className="card-text">Trailer : {movie.trailer}</p>
                                     <p className="card-text">Rating : {movie.rating}</p>
-                                    <a href="#" className="btn btn-primary">View trailer</a>
+                                    <a href="#" className="btn btn-primary" onClick={this.openModal2} >View trailer</a>
                                     <a href="#" className="btn btn-primary">Leave Review</a>
                                 </div>
 
+                                <Modal open={openView} onClose={this.closeModal2}>
+                                    <form>
+                                                <iframe id="cartoonVideo" width="560" height="315" src={"https://www.youtube.com/embed/8hYlB38asDY"} />
+
+                                    </form>
+                                </Modal>
                             </div>
 
                         </div>
                     </div>)
 
                 // card.push(<tr key={i + ""} id={i + ""} onClick={this.selectRow.bind(this, i)}>{children}</tr>)
+
+
 
             }
         }
@@ -302,7 +317,7 @@ export default class MovieList extends React.Component<IProps, IState> {
             const textBox = document.getElementById("search-tag-textbox") as HTMLInputElement
             // posting audio
             fetch('https://westus.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1?language=en-US', {
-                body: blob, // this is a .wav audio file    
+                body: blob, // this is a .wav audio file
                 headers: {
                     'Accept': 'application/json',
                     'Authorization': 'Bearer' + accessToken,
@@ -321,6 +336,7 @@ export default class MovieList extends React.Component<IProps, IState> {
 
         }
     }
+
 
     private updateMovie() {
         const movieTitle = document.getElementById("movie-edit-title-input") as HTMLInputElement
@@ -375,6 +391,14 @@ export default class MovieList extends React.Component<IProps, IState> {
         this.setState({ open: true });
     };
 
+    // Modal Open
+    private openModal2 = () => {
+        this.setState({ openView: true });
+    };
+    // Modal Close
+    private closeModal2 = () => {
+        this.setState({ openView: false });
+    };
     // Modal Close
     private closeModal = () => {
         this.setState({ open: false });
@@ -410,10 +434,10 @@ export default class MovieList extends React.Component<IProps, IState> {
 
     /*private showTrailer(id: any) {
         const selectedMovie = this.props.selectedMovie
-        alert(selectedMovie.trailer)
-        return (
-            null
-        )
-    }*/
+                        alert(selectedMovie.trailer)
+                        return (
+                            null
+                        )
+                    }*/
 
 }

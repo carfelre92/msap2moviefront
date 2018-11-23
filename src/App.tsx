@@ -3,7 +3,7 @@ import Modal from 'react-responsive-modal';
 import './App.css';
 import MovieImage from './component/MovieImage';
 import MovieList from './component/MovieList';
-import Logo from './Logo.png';
+import Logo from './logo.png';
 
 
 interface IState {
@@ -17,7 +17,7 @@ interface IState {
     password: any,
     shown: boolean,
     pv: any,
-    
+
 
 }
 
@@ -63,27 +63,60 @@ class App extends React.Component<{}, IState> {
         return (
             <div>
                 <div className="header-wrapper">
-
                     <nav className="navbar navbar-expand-lg navbar-light bg-light">
+                        <img className="navbar-brand" src={Logo} width="120" height="75" alt="" />
                         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                             <span className="navbar-toggler-icon" />
                         </button>
-
                         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-                         {/* ////////////// NAV BAR //////////////*/}
                             <div className="navbar-nav">
-                            <img className="navbar-brand" src={Logo} width="120" height="75" alt="" />
-                                {this.showMainOrSearch()}
-                                {this.createButton()}&nbsp;
+
+                                {this.showMainOrSearch()}&nbsp;&nbsp;&nbsp;&nbsp;
+                                {this.createButton()}&nbsp;&nbsp;&nbsp;&nbsp;
                                 {this.addMovieButton()}
                             </div>
                         </div>
                     </nav>
 
+
                 </div>
 
                 {this.showMainPage()}
 
+                <footer className="section footer-classic context-dark bg-image">
+                <br/>
+                    <div className="container">
+                        <div className="row row-30">
+                            <div className="col-md-4 col-xl-5">
+                                <div className="pr-xl-4"><a className="brand" href="index.html"><img className="brand-logo-light" alt="" width="140" height="37" /></a>
+                                    <p>I am having a good time</p>
+
+                                    <p className="rights"><span>©  </span><span className="copyright-year">2018</span><span>Waves</span><span>. </span><span>All Rights Reserved.</span></p>
+                                </div>
+                            </div>
+                            <div className="col-md-4">
+                                <h5>Contacts</h5>
+                                
+                                <dl className="contact-list">
+                                    <dt>email:</dt>
+                                    <dd><a href="mailto:#">spamhealer92@gmail.com</a></dd>
+                                </dl>
+                                <dl className="contact-list">
+                                    <dt>phones:</dt>
+                                    <dd><a href="tel:#">+6421-234-456</a>
+                                    </dd>
+                                </dl>
+                            </div>
+                            <div className="col-md-4 col-xl-3">
+                                <h5>Links</h5>
+                                <ul className="nav-list">
+                                    <li><a href="#">Projects</a></li>
+                                    <li><a href="#">Contacts</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
 
 
 
@@ -183,9 +216,9 @@ class App extends React.Component<{}, IState> {
                 <div className="container-fluid container-border">
                     <div className="row justify-content-md-center">
                         <div className="col-12">
-                        
-                            <MovieList movies={this.state.movies} selectNewMovie={this.selectNewMovie}selectedMovie={this.state.selectedMovie} loggedIn={this.state.loggedIn} searchByTitle={this.fetchMovies}/>
-                            
+
+                            <MovieList movies={this.state.movies} selectNewMovie={this.selectNewMovie} selectedMovie={this.state.selectedMovie} loggedIn={this.state.loggedIn} searchByTitle={this.fetchMovies} />
+
                         </div>
 
                     </div>
@@ -194,7 +227,7 @@ class App extends React.Component<{}, IState> {
         } else {
             return <div className="container">
                 <div className="row">
-                        <MovieImage selectedMovie={this.state.selectedMovie} loggedIn={this.state.loggedIn} searchByTitle={this.fetchMovies} selectNewMovie={this.selectNewMovie} movies={this.state.movies}/>
+                    <MovieImage selectedMovie={this.state.selectedMovie} loggedIn={this.state.loggedIn} searchByTitle={this.fetchMovies} selectNewMovie={this.selectNewMovie} movies={this.state.movies} />
 
                 </div>
             </div>
@@ -203,10 +236,10 @@ class App extends React.Component<{}, IState> {
 
     private showMainOrSearch() {
         if (this.state.pv === 0) {
-            return <button type="button" className="btn" onClick={this.searchMovieState}>search movie</button>
+            return <button type="button" className="btn" onClick={this.mainState}>Possible future page</button>
 
         } else {
-            return <button type="button" className="btn" onClick={this.mainState}>main page</button>
+            return <button type="button" className="btn" onClick={this.searchMovieState}>Main Page</button>
         }
 
     }

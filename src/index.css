@@ -41,16 +41,10 @@ body {
   margin:auto;
 }
 
-.navbar-nav { 
-  background: #ededed;
-  width: 100%;
-  text-align: center;
-  display: inline-block;
-  float: none;
-  padding-left: 30px;
-  padding-right: 30px;
-  }
-
   .card-makeLong{
     height:450px;
+  }
+
+  .footer-classic{
+    background-color: #9fa9a3
   }
