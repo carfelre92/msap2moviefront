@@ -1,8 +1,9 @@
 ﻿import * as React from 'react';
 import Modal from 'react-responsive-modal';
 import './App.css';
-// import MovieImage from './component/MovieImage';
+import MovieImage from './component/MovieImage';
 import MovieList from './component/MovieList';
+import Logo from './Logo.png';
 
 
 interface IState {
@@ -13,8 +14,10 @@ interface IState {
     selectedMovie: any,
     uploadFile: any,
     id: any,
-    password: any
-    shown: boolean
+    password: any,
+    shown: boolean,
+    pv: any,
+    
 
 }
 
@@ -28,9 +31,11 @@ class App extends React.Component<{}, IState> {
             open: false,
             openLogin: false,
             password: null,
-            selectedMovie: { "id": 0, "title": "Loading", "playtime": "0", "genre": "", "rating": "", "url": "", "uploaded": "", "width": "0", "height": "0" },
+            pv: 0,
+            selectedMovie: { "id": 0, "title": "Loading", "playtime": "0", "genre": "", "rating": "", "trailer": "", "url": "", "uploaded": "", "width": "0", "height": "0" },
             shown: true,
             uploadFile: null
+
         }
 
         this.fetchMovies("")
@@ -38,16 +43,21 @@ class App extends React.Component<{}, IState> {
         this.handleFileUpload = this.handleFileUpload.bind(this)
         this.uploadMovieData = this.uploadMovieData.bind(this)
         this.selectNewMovie = this.selectNewMovie.bind(this)
-        
+
         this.loginIfYouCan = this.loginIfYouCan.bind(this)
         this.logout = this.logout.bind(this)
 
         this.createButton = this.createButton.bind(this)
         this.addMovieButton = this.addMovieButton.bind(this)
 
+        this.searchMovieState = this.searchMovieState.bind(this)
+        this.mainState = this.mainState.bind(this)
+
     }
 
     public render() {
+        // tslint:disable-next-line:no-console
+        console.log(this.state.pv);
         const { open } = this.state;
         const { openLogin } = this.state;
         return (
@@ -55,13 +65,15 @@ class App extends React.Component<{}, IState> {
                 <div className="header-wrapper">
 
                     <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                        <a className="navbar-brand" href="#">Navbar</a>
                         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                             <span className="navbar-toggler-icon" />
                         </button>
+
                         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+                         {/* ////////////// NAV BAR //////////////*/}
                             <div className="navbar-nav">
-                                <a className="nav-item nav-link" href="#">Features</a>&nbsp;
+                            <img className="navbar-brand" src={Logo} width="120" height="75" alt="" />
+                                {this.showMainOrSearch()}
                                 {this.createButton()}&nbsp;
                                 {this.addMovieButton()}
                             </div>
@@ -69,22 +81,13 @@ class App extends React.Component<{}, IState> {
                     </nav>
 
                 </div>
-                
-                <div className="container">
-                    <div className="row justify-content-md-center">
-                        <div className="col-sm-">
-                            <MovieList movies={this.state.movies} selectNewMovie={this.selectNewMovie} searchByTitle={this.fetchMovies} />
-                        </div>
 
-                    </div>
-                </div>
-                {/* <div className="container">
-                    <div className="row">
-                        <div className="col-7">
-                            <MovieImage selectedMovie={this.state.selectedMovie} />
-                        </div>
-                    </div>
-                </div> */}
+                {this.showMainPage()}
+
+
+
+
+
 
                 {/* Modal used for Adding Movie */}
 
@@ -109,6 +112,11 @@ class App extends React.Component<{}, IState> {
                             <label>Rating</label>
                             <input type="text" className="form-control" id="movie-rating-input" placeholder="Enter rating of the movie" />
                             <small className="form-text text-muted">Eg. PG, R15</small>
+                        </div>
+                        <div className="form-group-trailer">
+                            <label>Trailer</label>
+                            <input type="text" className="form-control" id="movie-trailer-input" placeholder="Embed trailer link" />
+                            <small className="form-text text-muted">Youtube link please</small>
                         </div>
                         <div className="form-group">
                             <label>Image</label>
@@ -151,6 +159,56 @@ class App extends React.Component<{}, IState> {
         })
         alert('Logged out')
         this.forceUpdate()
+    }
+
+    private searchMovieState() {
+        this.setState({
+            pv: 0
+        })
+        // tslint:disable-next-line:no-console
+        console.log(this.state.pv);
+    }
+
+    private mainState() {
+        this.setState({
+            pv: 1
+        })
+        // tslint:disable-next-line:no-console
+        console.log(this.state.pv);
+    }
+
+    private showMainPage() {
+        if (this.state.pv === 0) {
+            return (
+                <div className="container-fluid container-border">
+                    <div className="row justify-content-md-center">
+                        <div className="col-12">
+                        
+                            <MovieList movies={this.state.movies} selectNewMovie={this.selectNewMovie}selectedMovie={this.state.selectedMovie} loggedIn={this.state.loggedIn} searchByTitle={this.fetchMovies}/>
+                            
+                        </div>
+
+                    </div>
+                </div>
+            )
+        } else {
+            return <div className="container">
+                <div className="row">
+                        <MovieImage selectedMovie={this.state.selectedMovie} loggedIn={this.state.loggedIn} searchByTitle={this.fetchMovies} selectNewMovie={this.selectNewMovie} movies={this.state.movies}/>
+
+                </div>
+            </div>
+        }
+    }
+
+    private showMainOrSearch() {
+        if (this.state.pv === 0) {
+            return <button type="button" className="btn" onClick={this.searchMovieState}>search movie</button>
+
+        } else {
+            return <button type="button" className="btn" onClick={this.mainState}>main page</button>
+        }
+
     }
 
     private loginIfYouCan() {
@@ -196,6 +254,7 @@ class App extends React.Component<{}, IState> {
         const moviePlaytime = document.getElementById("movie-playtime-input") as HTMLInputElement
         const movieGenre = document.getElementById("movie-genre-input") as HTMLInputElement
         const movieRating = document.getElementById("movie-rating-input") as HTMLInputElement
+        const movieTrailer = document.getElementById("movie-trailer-input") as HTMLInputElement
         const imageFile = this.state.uploadFile[0]
 
         if (movieTitle === null || moviePlaytime === null || movieGenre === null || movieRating === null || imageFile === null) {
@@ -206,6 +265,7 @@ class App extends React.Component<{}, IState> {
         const playtime = moviePlaytime.value
         const genre = movieGenre.value
         const rating = movieRating.value
+        const trailer = movieTrailer.value
         const url = "https://jinmsamovieapi.azurewebsites.net/api/Movie/upload"
 
         const formData = new FormData()
@@ -213,6 +273,7 @@ class App extends React.Component<{}, IState> {
         formData.append("Playtime", playtime)
         formData.append("Genre", genre)
         formData.append("Rating", rating)
+        formData.append("Trailer", trailer)
         formData.append("image", imageFile)
 
         fetch(url, {
@@ -270,7 +331,7 @@ class App extends React.Component<{}, IState> {
             .then(json => {
                 let selectedMovie = json[0]
                 if (selectedMovie === undefined) {
-                    selectedMovie = { "id": 0, "title": "Loading", "playtime": 0, "genre": "try something different", "rating": "", "url": "", "uploaded": "", "width": "0", "height": "0" }
+                    selectedMovie = { "id": 0, "title": "Loading", "playtime": 0, "genre": "try something different", "rating": "", "trailer": "", "url": "", "uploaded": "", "width": "0", "height": "0" }
                 }
                 this.setState({
                     selectedMovie,
